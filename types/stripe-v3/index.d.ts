@@ -266,11 +266,20 @@ declare namespace stripe {
             methodName: string;
         }
 
+        interface StripeTokenPaymentResponse extends StripePaymentResponse {
+            token: Token;
+        }
+
+        interface StripeSourcePaymentResponse extends StripePaymentResponse {
+            source: Source;
+        }
+
         interface StripePaymentRequest {
             canMakePayment(): Promise<{applePay?: boolean} | null>;
             show(): void;
             update(options: StripePaymentRequestUpdateOptions): void;
-            on(event: 'token' | 'source', handler: (response: StripePaymentResponse) => void): void;
+            on(event: 'token', handler: (response: StripeTokenPaymentResponse) => void): void;
+            on(event: 'source', handler: (response: StripeSourcePaymentResponse) => void): void;
             on(event: 'cancel', handler: () => void): void;
             on(event: 'shippingaddresschange', handler: (response: {updateWith: (options: UpdateDetails) => void, shippingAddress: ShippingAddress}) => void): void;
             on(event: 'shippingoptionchange', handler: (response: {updateWith: (options: UpdateDetails) => void, shippingOption: ShippingOption}) => void): void;
